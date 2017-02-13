@@ -1,0 +1,12 @@
+print("UImanger")
+
+
+function luaInit()
+CSUIManager:CreateUIroot()
+local Mybutton=CS.my_UI.Button
+local Button=Mybutton()
+Button.buttonObj.transform.parent=CSUIManager.UIroot.transform
+--Button.buttonObj:GetComponent("RectTransform").localPosition=CS.UnityEngine.Vector3(1,180,1)
+--Button.buttonObj:GetComponent("Button").onClick:AddListener(function() print("ButtonClick") 
+end)
+end
