@@ -5,7 +5,7 @@ using UnityEditor;
 public class My_BatchPrefab
 {
 
-    [MenuItem("Tools/BatchPrefab All Children")]
+   // [MenuItem("Tools/BatchPrefab All Children")]
     public static void BatchPrefab()
     {
         Transform tParent = ((GameObject)Selection.activeObject).transform;

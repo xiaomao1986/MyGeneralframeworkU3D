@@ -15,8 +15,7 @@ public class My_EditorWindow : EditorWindow
     }
     public Rect windowRect = new Rect(20, 20, 120, 50);
     private string function;
-    private GameObject SelectionObj=null;
-    private string path1 = "1111111111111";
+
     void OnGUI()
     {
         // GUILayout.Label("功能", EditorStyles.boldLabel);
@@ -34,46 +33,24 @@ public class My_EditorWindow : EditorWindow
             }
             function = "预设生成编辑器";
         }
+        if (GUILayout.Button("创建AssetBundle", GUILayout.Width(200)))
+        {
+            function = "创建AssetBundle";
+        }
         switch (function)
         {
             #region
             case "预设生成编辑器":
                 {
-                    string objName="";
- 
-                    bool isSelection = false;
-                    GUI.Label(new Rect(250, 0, 500, 20), "预设生成工具");
-                    if(Selection.transforms.Length==0)
-                    {
-                        objName = "选择一个物体";
-                        isSelection = false;
-                    }
-                    else if(Selection.transforms.Length > 1)
-                    {
-                        objName = "只能选择一个物体";
-                        isSelection = false;
-                    }
-                    else if (Selection.transforms.Length==1)
-                    {
-                        objName = Selection.transforms[0].name;
-                        isSelection = true;
-                    }
-                    GUI.Label(new Rect(250, 20, 500, 20), objName);
-                    if (isSelection)
-                    {
-                        GUI.Label(new Rect(250, 40, 60, 20), "保存位置：");
-                        GUI.TextArea(new Rect(310, 40, 500, 20), path1);  
-                        if (GUI.Button(new Rect(810,40,100,20),"选择"))
-                        {
-                             path1 = EditorUtility.OpenFolderPanel("123","456","789");
-                             Debug.Log("----" + path1);
-                        }
-                    }
+                    My_PrefabEditor.CrearePrefab();
                 }
                 break;
             #endregion
             case "创建项目":
                 My_Createproject.Createproject();
+                break;
+            case "创建AssetBundle":
+                My_ExportAssetBundles.CreateBundles();
                 break;
         }
         //GUILayout.Box("234", GUILayout.Width(200), GUILayout.Height(200));
