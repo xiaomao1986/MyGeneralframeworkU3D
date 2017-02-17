@@ -10,21 +10,13 @@ public class TestLoadNewAB : MonoBehaviour
     public Text t;
     public void Start()
     {
-        //AssetBundle manifestBundle = AssetBundle.LoadFromFile("file://"+Application.streamingAssetsPath + "/Android/Android");
-        //if (manifestBundle != null)
-        //{
-        //     manifest = (AssetBundleManifest)manifestBundle.LoadAsset("AssetBundleManifest");
-        //}
         StartCoroutine(LoadAssetBundle("cube03.myab"));
     }
      public void OnCilck()
     {
-        // AssetBundle cubeBundle = GetAssetBundle("cube03.MyAB");
         if (m_AssetBundle==null)
         {
-            Debug.Log("sssssssssssssssssssssssssss");
-            t.text = "OnCilck";
-            string Path3 = Application.streamingAssetsPath + "/Android/cube03.myab";
+            string Path3 = "file://" + Application.streamingAssetsPath + "/Android/cube03.myab";
             StartCoroutine(LoadAssetBundle1(Path3));
             return;
         }
@@ -81,7 +73,7 @@ public class TestLoadNewAB : MonoBehaviour
     IEnumerator LoadAssetBundle(string name)
     {
         //AssetBundle manifestBundle = AssetBundle.LoadFromFile("file://" + Application.streamingAssetsPath + "/Android/Android");
-        string Path =  Application.streamingAssetsPath + "/Android/" + "Android";
+        string Path  = AssetPath.AssetBundleManifestPath();
         WWW www = new WWW(Path);
         yield return www;
         if (www.error==null)
@@ -97,10 +89,11 @@ public class TestLoadNewAB : MonoBehaviour
             string Path2 = "";
             for (int index = 0; index < depNames.Length; index++)
             {
-                Path2 =  Application.streamingAssetsPath + "/Android/" + depNames[index];
+                Path2 = AssetPath.AssetBundlePath() + depNames[index];
                 StartCoroutine(LoadAssetBundle(Path2,dependsAssetbundle[index]));
             }
-        
+            string Path3 = AssetPath.AssetBundlePath() + "cube03.myab";
+            StartCoroutine(LoadAssetBundle1(Path3));
         }
         else
         {

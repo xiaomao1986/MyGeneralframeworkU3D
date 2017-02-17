@@ -56,36 +56,23 @@ public class My_ExportAssetBundles : MonoBehaviour
 
 
     public static string sourcePath = Application.dataPath + "/Resources";
-    const string AssetBundlesOutputPath = "/OutPut11";
+    const string AssetBundlesOutputPath = "/StreamingAssets";
 
     [MenuItem("Custom/BuildAssetBundle")]
     public static void BuildAssetBundle()
     {
         ClearAssetBundlesName();
-        Debug.Log("==sourcePath===" + sourcePath);
-
         Pack(sourcePath);
-
         string outputPath = Path.Combine(AssetBundlesOutputPath, Platform.GetPlatformFolder(EditorUserBuildSettings.activeBuildTarget));
-        Debug.Log("==outputPath===" + outputPath);
-        if (!Directory.Exists(outputPath))
+        string sd = outputPath + ".myab";
+        if (!Directory.Exists(sd))
         {
-            Directory.CreateDirectory(outputPath);
+            Directory.CreateDirectory(sd);
         }
-
-        //根据BuildSetting里面所激活的平台进行打包 设置过AssetBundleName的都会进行打包  
-        BuildPipeline.BuildAssetBundles(outputPath, 0, EditorUserBuildSettings.activeBuildTarget);
-
+        Debug.Log("--outputPath---" + outputPath);
+        BuildPipeline.BuildAssetBundles(sd, 0, EditorUserBuildSettings.activeBuildTarget);
         AssetDatabase.Refresh();
-
-        Debug.Log("打包完成");
-
-    }
-
-    /// <summary>  
-    /// 清除之前设置过的AssetBundleName，避免产生不必要的资源也打包  
-    /// 之前说过，只要设置了AssetBundleName的，都会进行打包，不论在什么目录下  
-    /// </summary>  
+    } 
     static void ClearAssetBundlesName()
     {
         int length = AssetDatabase.GetAllAssetBundleNames().Length;
@@ -136,7 +123,7 @@ public class My_ExportAssetBundles : MonoBehaviour
             AssetImporter assetImporter = AssetImporter.GetAtPath(dp);
             string pathTmp = dp.Substring("Assets".Length + 1);
             string assetName = pathTmp.Substring(pathTmp.IndexOf("/") + 1);
-            assetName = assetName.Replace(Path.GetExtension(assetName), ".MyAB");
+            assetName = assetName.Replace(Path.GetExtension(assetName), ".myab");
             Debug.Log(assetName);
             assetImporter.assetBundleName = assetName;
         }
@@ -162,29 +149,5 @@ public class My_ExportAssetBundles : MonoBehaviour
     static string Replace(string s)
     {
         return s.Replace("\\", "/");
-    }
-}
-public class Platform
-{
-    public static string GetPlatformFolder(BuildTarget target)
-    {
-        switch (target)
-        {
-            case BuildTarget.Android:
-                return "Android";
-            case BuildTarget.iOS:
-                return "IOS";
-            case BuildTarget.WebPlayer:
-                return "WebPlayer";
-            case BuildTarget.StandaloneWindows:
-            case BuildTarget.StandaloneWindows64:
-                return "Windows";
-            case BuildTarget.StandaloneOSXIntel:
-            case BuildTarget.StandaloneOSXIntel64:
-            case BuildTarget.StandaloneOSXUniversal:
-                return "OSX";
-            default:
-                return null;
-        }
     }
 }

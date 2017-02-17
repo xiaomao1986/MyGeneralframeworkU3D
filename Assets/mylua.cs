@@ -37,27 +37,27 @@ public class mylua : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        tes = new test();
-        Instanic = this;
-        luaenv = new XLua.LuaEnv();
-        //luatable = luaenv.NewTable();
-        //LuaTable meta = luaenv.NewTable();
-        //meta.Set("__index", luaenv.Global);
-        //luatable.SetMetaTable(meta);
-        //meta.Dispose();
-        //luatable.Set("CSmylua", this);
-        TextAsset textLua = (TextAsset)Resources.Load("Lua1.lua");
-        luaenv.DoString(textLua.text);
-        luaenv.Global.Set("mylua",this);
+        //tes = new test();
+        //Instanic = this;
+        //luaenv = new XLua.LuaEnv();
+        ////luatable = luaenv.NewTable();
+        ////LuaTable meta = luaenv.NewTable();
+        ////meta.Set("__index", luaenv.Global);
+        ////luatable.SetMetaTable(meta);
+        ////meta.Dispose();
+        ////luatable.Set("CSmylua", this);
+        //TextAsset textLua = (TextAsset)Resources.Load("Lua1.lua");
+        //luaenv.DoString(textLua.text);
+        //luaenv.Global.Set("mylua",this);
 
-        luaenv.Global.Get("luaInit", out testobj);
+        //luaenv.Global.Get("luaInit", out testobj);
 
-        testobj(UIroot);
-        luaenv.Global.Get("ButtonClick", out onbuttonClick);
-         ac = luaenv.Global.Get<Action>("CreateButton");
+        //testobj(UIroot);
+        //luaenv.Global.Get("ButtonClick", out onbuttonClick);
+        // ac = luaenv.Global.Get<Action>("CreateButton");
        
        
-        getText();
+        //getText();
     }
     public void getText()
     {
