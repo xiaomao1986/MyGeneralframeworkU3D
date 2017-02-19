@@ -60,7 +60,7 @@ public class AssetPath
 #endif
         if (Platform.Android == m_platform)
         {
-            return Application.streamingAssetsPath + "/Android/" + "Android";
+            return Application.streamingAssetsPath + "/Android/" + "Android.myab";
         }
         if (Platform.IOS == m_platform)
         {
@@ -68,7 +68,7 @@ public class AssetPath
         }
         if (Platform.Windows == m_platform)
         {
-            return "file://" + Application.streamingAssetsPath + "/Android/" + "Android";
+            return "file://" + Application.streamingAssetsPath + "/Android/" + "Android.myab";
         }
         return "";
     }

@@ -8,19 +8,50 @@ public class TestLoadNewAB : MonoBehaviour
     private GameObject cube=null;
     private AssetBundleManifest manifest;
     public Text t;
+
+    private Dictionary<string, AssetBundle> abDic = new Dictionary<string, AssetBundle>();
     public void Start()
     {
-        StartCoroutine(LoadAssetBundle("cube03.myab"));
+        StartCoroutine(LoadAssetBundle("cube.myab"));
     }
      public void OnCilck()
     {
         if (m_AssetBundle==null)
         {
-            string Path3 = "file://" + Application.streamingAssetsPath + "/Android/cube03.myab";
-            StartCoroutine(LoadAssetBundle1(Path3));
+            string Path3 = "file://" + Application.streamingAssetsPath + "/Android/cube.myab";
+            StartCoroutine(LoadAssetBundle1(Path3, "cube"));
             return;
         }
      
+    }
+    public void OnCilck1()
+    {
+        if (abDic.ContainsKey("cube"))
+        {
+            cube = Instantiate(abDic["cube"].LoadAsset("cube")) as GameObject;
+            cube.transform.position = new Vector3(0, 0, 5);
+        }
+
+    }
+    public void OnCilck2()
+    {
+        if (abDic.ContainsKey("cube"))
+        {
+            foreach (var item in abDic)
+            {
+                if (item.Key!= "cube"&&item.Key!="m1")
+                {
+                    item.Value.Unload(true);
+                    Debug.Log("释放成功！！！"+item.Key);
+                }
+            }
+         
+          
+        }else
+        {
+            Debug.Log("cube！被删除！！");
+        }
+
     }
     void OnGUI()
     {
@@ -84,16 +115,19 @@ public class TestLoadNewAB : MonoBehaviour
 
             string[] depNames = manifest.GetAllDependencies(name);
             Debug.Log("depNames length = " + depNames.Length.ToString());
-            t.text = "depNames length =" + depNames.Length.ToString();
             AssetBundle[] dependsAssetbundle = new AssetBundle[depNames.Length];
             string Path2 = "";
             for (int index = 0; index < depNames.Length; index++)
             {
+
+                Debug.Log("depNames---"+ depNames[index]);
+                string ABname = depNames[index].Replace(".myab", "");
+                Debug.Log("ABname---" + ABname);
                 Path2 = AssetPath.AssetBundlePath() + depNames[index];
-                StartCoroutine(LoadAssetBundle(Path2,dependsAssetbundle[index]));
+                StartCoroutine(LoadAssetBundle(Path2,dependsAssetbundle[index],ABname));
             }
-            string Path3 = AssetPath.AssetBundlePath() + "cube03.myab";
-            StartCoroutine(LoadAssetBundle1(Path3));
+            //string Path3 = AssetPath.AssetBundlePath() + "cube03.myab";
+          //  StartCoroutine(LoadAssetBundle1(Path3));
         }
         else
         {
@@ -101,7 +135,7 @@ public class TestLoadNewAB : MonoBehaviour
             t.text = "wwwh =" + www.error.ToString();
         }
     }
-    IEnumerator LoadAssetBundle(string path2, AssetBundle ab)
+    IEnumerator LoadAssetBundle(string path2, AssetBundle ab,string ABname)
     {
         Debug.Log("path2====" + path2);
         t.text = "path2 =" + path2;
@@ -109,14 +143,19 @@ public class TestLoadNewAB : MonoBehaviour
         yield return www1;
         if (www1.error == null)
         {
-            ab = www1.assetBundle;
-        }else
+            if (!abDic.ContainsKey(ABname))
+            {
+                ab = www1.assetBundle;
+                abDic.Add(ABname, ab);
+            }
+        }
+        else
         {
             Debug.Log("www1====" + www1.error.ToString());
             t.text = "www1 =" + www1.error.ToString();
         }
     }
-    IEnumerator LoadAssetBundle1(string path2)
+    IEnumerator LoadAssetBundle1(string path2, string ABname)
     {
         Debug.Log("path2====" + path2);
         t.text = "path2 =" + path2;
@@ -124,8 +163,9 @@ public class TestLoadNewAB : MonoBehaviour
         yield return www1;
         if (www1.error == null)
         {
-            cube = Instantiate(www1.assetBundle.LoadAsset("cube03")) as GameObject;
-            cube.transform.position = new Vector3(0, 0, 5);
+            abDic.Add(ABname, www1.assetBundle);
+            //cube = Instantiate(www1.assetBundle.LoadAsset("cube")) as GameObject;
+            //cube.transform.position = new Vector3(0, 0, 5);
         }
         else
         {

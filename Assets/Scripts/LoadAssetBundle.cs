@@ -67,8 +67,8 @@ public class LoadAssetBundle
                 string Pant = AssetPath.AssetBundleManifestPath();
                 AppStart.Instance.tt.text = AppStart.Instance.tt.text + "Pant --" + Pant + "---";
             // WWW manifestWWW = GetLoadWWW(Pant);
-               
-                WWW manifestWWW = resload.getww(Pant);
+
+              WWW manifestWWW= resload.getww(Pant);
                 AppStart.Instance.tt.text = AppStart.Instance.tt.text + "manifestWWW --" + manifestWWW + "---";
                 if (manifestWWW==null)
                 {
